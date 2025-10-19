@@ -1,56 +1,72 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package quicksorttrue;
+package quicksort;
+
+import java.util.Random;
 
 /**
  *
  * @author FRANCE DUMAOG
  */
 public class QuickSort {
-//    int[] array;
-//    int lowIndex;
-//    int highIndex;
-     public static void quickSort(int[] arr, int lowIndex, int highIndex) {
-        if (lowIndex < highIndex) {
-            // Partition the array and get the pivot index
-            int pi = partition(arr, lowIndex, highIndex);
+    public static void main(String[] args) {
+        Random rand = new Random();
+        int[] numbers = new int[10];//{1, 9, 8,2,7,1,3,6};
 
-            // Recursively sort elements before and after partition
-            quickSort(arr, lowIndex, pi - 1);
-            quickSort(arr, pi + 1, highIndex);
+        for (int i = 0; i < numbers.length; i++) {
+            numbers[i] = rand.nextInt(10); // 0 to 9
         }
+
+        System.out.println("Before: ");
+        printArray(numbers);
+
+        quicksort(numbers, 0, numbers.length - 1);
+
+        System.out.println("\nAfter: ");
+        printArray(numbers);
     }
-    public static int partition(int[] arr, int lowIndex, int highIndex) {
-        int pivot = arr[highIndex]; // Choosing the last element as pivot
-        int i = (lowIndex - 1); // Index of smaller element
 
-        for (int j = lowIndex; j < highIndex; j++) {
-            // If current element is smaller than the pivot
-            if (arr[j] < pivot) {
-                i++;
+    private static void quicksort(int[] array, int lowIndex, int highIndex) {
+        if (lowIndex >= highIndex) {
+            return;
+        }
 
-                // Swap arr[i] and arr[j]
-                int temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
+        int pivot = array[highIndex];
+        int leftPointer = lowIndex;
+        int rightPointer = highIndex - 1;
+
+        while (leftPointer <= rightPointer) {
+            while (leftPointer <= rightPointer && array[leftPointer] <= pivot) {
+                leftPointer++;
+            }
+            while (leftPointer <= rightPointer && array[rightPointer] >= pivot) {
+                rightPointer--;
+            }
+
+            if (leftPointer < rightPointer) {
+                swap(array, leftPointer, rightPointer);
             }
         }
-        // Swap arr[i + 1] and arr[highIndex] (pivot)
-        int temp = arr[i + 1];
-        arr[i + 1] = arr[highIndex];
-        arr[highIndex] = temp;
 
-        return i + 1;
+        // Swap pivot into correct position
+        swap(array, leftPointer, highIndex);
+
+        quicksort(array, lowIndex, leftPointer - 1);
+        quicksort(array, leftPointer + 1, highIndex);
     }
-    // Method to print array
-    public static void printArray(int[] arr) {
-        for (int j : arr) {
-            System.out.print(j + " ");
+
+    private static void swap(int[] array, int indexOne, int indexTwo) {
+        int temp = array[indexOne];
+        array[indexOne] = array[indexTwo];
+        array[indexTwo] = temp;
+    }
+
+    private static void printArray(int[] numbers) {
+        for (int num : numbers) {
+            System.out.print(num + " ");
         }
         System.out.println();
     }
 }
-    
-
